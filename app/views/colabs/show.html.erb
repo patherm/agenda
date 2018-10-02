@@ -1,0 +1,14 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Nome:</strong>
+  <%= @colab.nome %>
+</p>
+
+<p>
+  <strong>List:</strong>
+  <%= @colab.list %>
+</p>
+
+<%= link_to 'Edit', edit_colab_path(@colab) %> |
+<%= link_to 'Back', colabs_path %>

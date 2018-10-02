@@ -1,0 +1,31 @@
+<div class="container2">
+      <div class="middle">
+            <%= simple_form_for @list do |f| %>
+                  <%= render 'layouts/errors' , object: @list %>
+
+                  <%= f.fields_for :colabs do |l| %>
+                        <p>
+                              <%= l.label :Nome %></br>
+                              <%= l.text_field :nome, class:"typeahead2 form-control", style: "width:400px", autocomplete: "off", autofocus: true, id: "names_search", placeholder: "Pesquise aqui o nome..." %>
+                        </p>
+                  <% end %>
+                  <div class="field">
+                        <%= f.label :Setor %></br>
+                        <%= f.collection_select :setor, Li.order(:set), :set, :set, {prompt: "Selecione o Setor", :required => true}, style: "width:200px", class:"form-control", autofocus: true %>
+                  </div>
+                  <p class="form-group">
+                        <%= f.fields_for :telefones do |p| %>
+                              <%= p.label :Telefone %></br>
+                                    <%= p.grouped_collection_select :telefone, Li.order(:set), :tels, :set, :tel, :tel, {prompt: "Selecione o Telefone" ,  :required => true}, style: "width:200px", class:"form-control" %>
+                              <p>
+                                    <%= p.hidden_field :ramal, readonly: true %>
+                              </p>
+                        <% end %>
+                  </p>
+                  <p><div class="actions">
+                        <p><%= f.submit class:'btn btn-primary' %>
+                              <%= link_to 'Cancelar', admin_path, class: 'btn btn-default' %></p>
+                  </div></p>
+            <% end %>
+      </div>
+</div>

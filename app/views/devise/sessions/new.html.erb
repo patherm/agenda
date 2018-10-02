@@ -1,0 +1,24 @@
+<div class="main">
+  <div class="container2">
+    <center>
+      <div class="middle">
+        <div id="login">
+          <%= form_for(resource, as: resource_name, url: session_path(resource_name)) do |f| %>
+            <fieldset class="clearfix">
+              <%= f.text_field :username, autofocus: true, autocomplete: "off", class: "fa fa-user", placeholder: "Nome de Usuário" %>
+              <%= f.password_field :password, autocomplete: "off", class: "fa fa-lock", placeholder: "Senha" %>  
+              <div><span style="width:80%; text-align:right;  display: inline-block;"><input type="submit" value="Acessar"></span></div>
+            </fieldset>
+            <div class="clearfix"></div>
+          <% end %>
+          <div class="clearfix"></div>
+        </div> <!-- end login -->
+          <div class="logo">
+            <%= image_tag('logo-hu-univasf.png') %>
+            <div class="clearfix"></div>
+          </div>
+          <%= render "devise/shared/links" %>
+      </div>
+    </center>
+  </div>
+</div>

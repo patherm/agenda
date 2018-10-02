@@ -1,0 +1,42 @@
+<div class="container2">
+      <div class="middle">
+            <%= simple_form_for @list do |f| %>
+                  <%= render 'layouts/errors' , object: @list %>
+                  <%= f.fields_for :colabs do |l| %>
+                        <p>
+                              <%= l.label :Nome %></br>
+                              <%= l.text_field :nome, class:"form-control", style: "width:400px", readonly: true %>
+                        </p>
+                  <% end %>
+                  <div class="field">
+                  	<%= f.label :Setor %></br>
+                  	<%= f.collection_select :setor, Li.order(:set), :set, :set, {prompt: "Selecione o Setor", :required => true}, style: "width:200px", class:"form-control", autofocus: true %>
+                  </div>
+                  <p class="form-group">
+                        <%= f.fields_for :telefones do |p| %>
+                              <%= p.label :Telefone %></br>
+                                    <%= p.grouped_collection_select :telefone, Li.order(:set), :tels, :set, :tel, :tel, {prompt: "Selecione o Telefone" ,  :required => true}, style: "width:200px", class:"form-control" %>
+                              <p>
+                                    <%= p.hidden_field :ramal, readonly: true %>
+                              </p>
+                  	<% end %>
+                  </p>
+                  <p><div class="actions">
+                        <% if current_page?(edit_list_path(current_user)) and current_user.sign_in_count < 3 %>
+                              <%= f.submit class:'btn btn-primary' %>
+                              <%= link_to 'Cancelar', admin_path, class: 'btn btn-default' %></p>
+                        <% else %>
+                              <p><%= f.submit "Atualizar Registro", class:'btn btn-primary' %>
+                              <%= link_to 'Cancelar', admin_path, class: 'btn btn-default' %></p>
+                              </br>
+                              </br>
+                              <% unless current_user.admin? %>
+                                    <%= link_to list_clear_path(@current_user), method: :clear, data:{confirm: "Tem certeza que deseja remover esse registro?"}, class:'btn btn-primary' do %>
+                                      <i class="glyphicon glyphicon-remove-sign"> Remover Registro?</i>
+                                    <% end %>
+                              <% end %>
+                        <% end %>
+                  </div></p>
+            <% end %>
+      </div>
+</div>

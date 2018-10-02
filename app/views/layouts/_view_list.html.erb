@@ -1,0 +1,38 @@
+<div class="container-fluid">
+  <div class="row">
+    <div class="searchable-container">
+      <div class="container2">
+        <div class="middle">
+          <div class="logo2">
+            <%= image_tag('logo-hu-univasf.png') %>
+            <h4> Sistema de Registro de ... </h4>
+              <div class="clearfix"></div>
+          </div>
+        </div>
+      </div>
+        <% @lists.each do |list| %>
+          <% list.colabs.each do |c| %>
+            <% list.telefones.each do |t| %>
+            <% unless list.setor.nil? %>
+              <div class="items col-xs-12 col-sm-6 col-md-6 col-lg-6 clearfix">
+                <br/><div class="info-block block-info clearfix">
+                    <h4><%= c.nome %></h4>
+                    <h5>Setor: <%= list.setor %></h5>
+                    <h5>Telefone: <%= t.telefone %></h5>
+                    <% if signed_in? && current_user.admin? %>
+                      <%= link_to edit_list_path(list), class:'btn btn-link' do %>
+                        <i class="glyphicon glyphicon-edit"> Editar</i>
+                      <% end %>
+                      <%= link_to list_path(list), method: :delete, data:{confirm: "Deseja remover esse Registro?"}, class:'btn btn-link' do %>
+                        <i class="glyphicon glyphicon-remove-sign"> Remover</i>
+                      <% end %>
+                    <% end %>
+                </div>
+              </div>
+            <% end %>
+            <% end %>
+          <% end %>
+        <% end %>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,9 @@
+<div class="container">
+  <section class="lists">
+    <% if @lists.present? %>
+      <%= render 'layouts/view_list' %>
+    <% else %>
+      <% flash[:alert] = "Não existem registros para a busca " %>
+    <% end %>
+  </selection>
+</div>

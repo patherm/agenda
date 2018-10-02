@@ -1,0 +1,297 @@
+<p><a class="btn btn-default" data-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">Novo Setor
+      </a>
+            <div class="collapse" id="collapseExample">
+                  <div class="card card-body">
+                        <!--<%= g.text_field :setor %></br>
+                        <% StaticData::SETOR.push(g.to_s) %> 
+                        <% data = YAML::load(File.open("#{Rails.root}/config/setor.yml"))
+                        File.open("#{Rails.root}/config/setor.yml", "w") do |fo|
+                              fo.puts data.to_yaml
+                              fo.puts "- SGTPI"
+                        end %>-->
+                  </div>
+            </div>
+      </p>
+
+----------------------------------------------------------------------------------------------------------
+
+# This file should contain all the record creation needed to seed the database with its default values.
+# The data can then be loaded with the rails db:seed command (or created alongside the database with db:setup).
+#
+# Examples:
+#
+#   movies = Movie.create([{ name: 'Star Wars' }, { name: 'Lord of the Rings' }])
+#   Character.create(name: 'Luke', movie: movies.first)
+
+user = User.new(
+  email: 'patrick.sobreira@gmail.com', 
+  password: '123456', 
+  password_confirmation: '123456'
+)
+user.save!
+
+List.create!([
+      {
+            nome: "Paulo Xavier",
+            setor: "Ambulatório",
+      },
+      {
+            nome: "Antônio",
+            setor: "Ambulatório",
+      },
+      {
+            nome: "Cesar",
+            setor: "Acolhimento/Triagem",
+      },
+])
+list = List.find_by(nome: 'Paulo Xavier')
+list.telefones.create!(telefone: "8721016511", ramal:"6511")
+list = List.find_by(nome: 'Antônio')
+list.telefones.create!(telefone: "8721016512", ramal:"6511")
+
+list = List.find_by(nome: 'Cesar')
+list.telefones.create!(telefone: "8721016513", ramal:"6511")
+
+---------------------------------------------------------------------------------------------
+
+# This file is auto-generated from the current state of the database. Instead
+# of editing this file, please use the migrations feature of Active Record to
+# incrementally modify your database, and then regenerate this schema definition.
+#
+# Note that this schema.rb definition is the authoritative source for your
+# database schema. If you need to create the application database on another
+# system, you should be using db:schema:load, not running all the migrations
+# from scratch. The latter is a flawed and unsustainable approach (the more migrations
+# you'll amass, the slower it'll run and the greater likelihood for issues).
+#
+# It's strongly recommended that you check this file into your version control system.
+
+ActiveRecord::Schema.define(version: 20180803123821) do
+
+  create_table "colabs", force: :cascade do |t|
+    t.string "nome"
+    t.integer "list_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["list_id"], name: "index_colabs_on_list_id"
+  end
+
+  create_table "lists", force: :cascade do |t|
+    t.string "setor"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "telefones", force: :cascade do |t|
+    t.string "telefone"
+    t.string "ramal"
+    t.integer "list_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["list_id"], name: "index_telefones_on_list_id"
+  end
+
+  create_table "users", force: :cascade do |t|
+    t.string "email", default: "", null: false
+    t.string "encrypted_password", default: "", null: false
+    t.string "reset_password_token"
+    t.datetime "reset_password_sent_at"
+    t.datetime "remember_created_at"
+    t.integer "sign_in_count", default: 0, null: false
+    t.datetime "current_sign_in_at"
+    t.datetime "last_sign_in_at"
+    t.string "current_sign_in_ip"
+    t.string "last_sign_in_ip"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["email"], name: "index_users_on_email", unique: true
+    t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
+  end
+
+end
+
+----------------------------------------------------------------------------------------------------
+
+
+//= require jquery
+//= require jquery-ui 
+//= require jquery_ujs
+//= require rails-ujs
+//= require turbolinks
+//= require typeahead
+//= require bootstrap
+//= require bootstrap-sprockets
+//= require_tree .
+
+----------------------------------------------
+
+<%= simple_form_for @user do |ff| %>
+
+<%= render 'layouts/errors' , object: @list %>
+
+      <p>
+            <%= l.label :Nome %></br>
+            <%= ff.text_field :nome, class:"form-control", style: "width:400px" %>
+      </p>
+
+<%= ff.fields_for :lists do |f| %>
+
+<div class="field">
+  <%= f.label :Setor %></br>
+  <%= f.collection_select :setor, Li.order(:set), :set, :set, prompt: "Selecione o Setor", class:"form-control", style: "width:400px" %>
+</div>
+<p class="form-group">
+      <%= f.fields_for :telefones do |p| %>
+            <%= p.label :Telefone %></br>
+                  <%= p.grouped_collection_select :telefone, Li.order(:set), :tels, :set, :tel, :tel, prompt: "Selecione o Telefone" , class:"form-control" %>
+            </br>
+            <!--<%= p.label :Ramal %></br>
+                  <%= p.grouped_collection_select :ramal, Li.order(:set), :tels, :set, :ram, :ram, prompt: "Selecione o Ramal" , class:"form-control" %>
+            </br>-->
+            <!--<p>
+                  <%= p.label :Ramal %></br>
+                  <%= p.text_field :ramal %>
+            </p>-->
+
+  <% end %>
+</p>
+
+<p>
+      <div class="actions">
+            <%= f.submit class:'btn btn-primary' %>
+            <%= link_to 'Cancelar', admin_path, class: 'btn btn-default' %>
+      </div>  
+</p>
+
+<% end %>
+<% end %>
+
+----------------------------------------------------------------------------------------
+<!--   <div class="container-fluid">
+    
+      <h2>Acessar</h2>
+      <%= form_for(resource, as: resource_name, url: session_path(resource_name)) do |f| %>
+
+        <div class="field">
+          <%= f.label :Nome_de_usuario %><br />
+          <%= f.text_field :username, autofocus: true, autocomplete: "off" %>
+        </div>
+
+        <div class="field">
+          <%= f.label :Senha %><br />
+          <%= f.password_field :password, autocomplete: "off" %>
+        </div>
+
+        <% if devise_mapping.rememberable? -%>
+          <div class="field">
+            <%= f.check_box :remember_me %>
+            <%= f.label :lembrar_me %>
+          </div>
+        <% end -%>
+
+        <div class="actions">
+          <%= f.submit "Acessar" %>
+        </div>
+      <% end %>
+
+      <%= render "devise/shared/links" %>
+
+      </div>
+    </div> 
+  </div> -->
+
+----------------------------------------------------------
+
+<div class='container'>
+<div class="panel panel-default">
+  <div class="panel-heading">
+    <% if current_user.sign_in_count < 3 %>
+      <h2>Cadastrando Novo Registro</h2>
+    <% else %>
+      <h2>Editar Registro</h2>
+    <% end %>
+  </div>
+  <div class="panel-body">
+  <%= render 'form'%>
+  </div>
+</div>
+</div>
+
+--------------------------------------------------------------
+
+<div class="container-fluid">
+<table class="table table-striped table-hover ">
+  <thead>
+    <tr class="bg-primary">
+      
+      <% if signed_in? && current_user.admin? %>
+        <th width="25%">Nome</th>
+        <th width="25%">Setor</th>
+        <th width="25%">Telefone</th>
+        <th  class="text-center"><i class="glyphicon glyphicon-cog"></i></th>
+      <% else %>
+        <th width="25%">Nome</th>
+        <th width="25%">Setor</th>
+        <th width="25%">Telefone</th>
+      <% end %>
+    </tr>
+  </thead>
+</table>
+</div>
+
+<% @lists.each do |list| %>
+  <% unless list.setor.nil? %>
+    <div class="container-fluid">
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+          <span class="sr-only">Toggle navigation</span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+    <% list.colabs.each do |c| %>
+      <% list.telefones.each do |t| %>
+        <table class="table table-striped table-hover align="left"">
+          <tr>
+              
+                <td width="25%"><%= c.nome %></td>
+                <td width="25%"><%= list.setor %></td>
+                <td width="25%"><%= format_phone(t.telefone) %></td>
+              
+            <!--<% if signed_in? %>
+              <td class="text-center"> 
+                  <% link_to edit_list_path(list), class:'btn btn-link' do %>
+                    <i class="glyphicon glyphicon-edit"> Editar</i>
+                  <% end %>
+                  <% link_to list_path(list), method: :delete, data:{confirm: "Deseja remover esse Registro?"}, class:'btn btn-link' do %>
+                    <i class="glyphicon glyphicon-remove-sign"> Remover</i>
+                  <% end %>
+              </td>            
+            <% end %>-->
+            <% if signed_in? && current_user.admin? %>
+              <td class="text-center"> 
+                  <%= link_to edit_list_path(list), class:'btn btn-link' do %>
+                    <i class="glyphicon glyphicon-edit"> Editar</i>
+                  <% end %>
+                  <%= link_to list_path(list), method: :delete, data:{confirm: "Deseja remover esse Registro?"}, class:'btn btn-link' do %>
+                    <i class="glyphicon glyphicon-remove-sign"> Remover</i>
+                  <% end %>
+              </td>
+            <% end %>
+          </tr>
+        </table>
+      <% end %>  
+    <% end %>
+    </div>
+  <% end %>
+<% end %>
+
+-------------------------------------------------
+
+if name.start_with?("Adm ") || ("adm ")
+            self.admin = true
+            name = name[4..-1]
+            self.nome = name
+          else
+            self.nome = name
+          end
+          

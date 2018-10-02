@@ -1,0 +1,12 @@
+<div class='container3'>
+  <div class="middle">
+      <% if current_user.sign_in_count == 2 %>
+        <h2>Cadastrando Novo Registro</h2><br>
+      <% else %>
+        <h2>Editar Registro</h2>
+      <% end %>
+  </div>
+</div>
+  <div class="panel-body">
+    <%= render 'form'%>
+  </div>

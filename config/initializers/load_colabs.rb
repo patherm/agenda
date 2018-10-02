@@ -1,0 +1,1 @@
+#COLABS = YAML.load_file("#{Rails.root}/config/colabs.yml")
