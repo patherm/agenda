@@ -20,7 +20,7 @@ class User < ApplicationRecord
 
 require 'net/ldap'
     def get_ldap_name
-      name_for_login(username, password)
+        name_for_login(username, password)
     end
 
     def name_for_login (username, password)
@@ -34,7 +34,19 @@ require 'net/ldap'
       treebase = "OU=Administradores,OU=Usuarios,OU=HEWAB,OU=EBSERH,dc=EBSERHNET,dc=EBSERH,dc=GOV,dc=BR"
       filter = Net::LDAP::Filter.eq( "sAMAccountName", username )
       attrs = %w[ name ]
-      
+      ldap.search( base: treebase, filter: filter, attributes: attrs, return_result: true ) do |entry|
+        entrou = true
+       #puts "#{entry.name}"
+        name = entry.name.first.to_s
+        self.admin = true
+        if name.start_with?("Adm ") || ("adm ")
+          name = name[4..-1]
+          self.nome = name
+        else
+          self.nome = name
+        end
+        break
+      end
       if entrou == false
         treebase = "dc=EBSERHNET,dc=EBSERH,dc=GOV,dc=BR"
         ldap.search( base: treebase, filter: filter, attributes: attrs, return_result: true ) do |entry|
