@@ -6,13 +6,8 @@ class User < ApplicationRecord
          :recoverable, :rememberable, :trackable, :validatable
   # devise :database_authenticatable, :registerable,
   #        :recoverable, :rememberable, :trackable, :validatable
-  #before_create :cadastre
-  #COLABS = ""
   before_create :get_ldap_name
-  #before_update :get_ldap_name
   after_update :get_ldap_json
-# has_one :list
-# validates_associated :list
 
   	def email_required?
     	false

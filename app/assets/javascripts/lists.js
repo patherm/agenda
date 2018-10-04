@@ -123,9 +123,15 @@ function filterTelefonesList(){
 //-----------------------------------------------------------------------
 
     function autocompletejs(){
-      if (window.location.href == "http://localhost:3000/"){
-        $('.searchable-container .items').hide();
-        $('.logo2').show();
+      if (window.location.href == "http://localhost:3000/" || window.location.href == "http://localhost:3000/admin"){
+        
+        setInterval(function() {
+        l = $('#lists_search').val();
+        if (l == ''){
+          $('.searchable-container .items').hide();
+          $('.logo2').show();
+        }
+      }, 500);
       }
       $('#lists_search').on('keyup', function() {
         $('.logo2').hide();

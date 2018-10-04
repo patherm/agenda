@@ -31,7 +31,7 @@
                               </br>
                               </br>
                               <% unless current_user.admin? %>
-                                    <%= link_to list_clear_path(@current_user), method: :clear, data:{confirm: "Tem certeza que deseja remover esse registro?"}, class:'btn btn-primary' do %>
+                                    <%= link_to list_clear_path(current_user), method: :clear, data:{confirm: "Tem certeza que deseja remover esse registro?"}, class:'btn btn-primary' do %>
                                       <i class="glyphicon glyphicon-remove-sign"> Remover Registro?</i>
                                     <% end %>
                               <% end %>
