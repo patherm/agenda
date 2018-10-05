@@ -48,8 +48,14 @@ gem 'devise_ldap_authenticatable', '~> 0.8.6'
 # gem 'mini_magick', '~> 4.8'
 
 # Use Capistrano for deployment
-# gem 'capistrano-rails', group: :development
+gem 'capistrano-rails', group: :development
 
+platforms :ruby do # linux
+
+gem 'kgio'
+gem 'unicorn'
+
+end
 # Reduces boot times through caching; required in config/boot.rb
 gem 'bootsnap', '~> 1.3', '>= 1.3.1', require: false
 
